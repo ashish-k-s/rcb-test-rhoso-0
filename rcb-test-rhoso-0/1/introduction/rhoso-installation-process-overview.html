@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>RHOSO installation process overview :: RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</title>
+    <link rel="prev" href="traditional-tripleo-deployment-versus-deployment-with-openshift-cluster.html">
+    <link rel="next" href="../prerequisites-for-installation/prerequisites-for-installation.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rcb-test-rhoso-0" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="introduction.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="traditional-tripleo-deployment-versus-deployment-with-openshift-cluster.html">Traditional TripleO deployment versus deployment with OpenShift cluster.</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="rhoso-installation-process-overview.html">RHOSO installation process overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../prerequisites-for-installation/prerequisites-for-installation.html">Prerequisites for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/about-the-prerequisite-operators.html">About the Prerequisite Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-nmstate-operator.html">Install NMState Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-metallb-operator.html">Install MetalLB Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-cert-manager-operator.html">Install Cert-Manager Operator</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/preparing-rhocp-for-rhosp-network-isolation.html">Preparing RHOCP for RHOSP Network Isolation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/setting-up-node-network-configuration-policy.html">Setting up Node Network Configuration Policy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/configuring-network-attachment-definition.html">Configuring Network Attachment Definition</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/configure-metallb-ip-address-pools.html">Configure MetalLB IP Address Pools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/setup-metallb-l2-advertisement-configuration.html">Setup MetalLB L2 Advertisement configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../storage/storage.html">Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../storage/configuring-nfs-storage.html">Configuring NFS storage</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../storage/verify-storage-configuration.html">Verify storage configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../install-control-plane/install-control-plane.html">Install control plane</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/configure-the-secrets.html">Configure the secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/install-the-openstack-operator.html">Install the OpenStack Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/create-the-openstack-control-plane.html">Create the OpenStack Control Plane</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/troubleshoot-the-openstack-control-plane.html">Troubleshoot the OpenStack Control Plane</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/verify-openstack-control-plane-configuration.html">Verify OpenStack control plane configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../create-data-plane/create-data-plane.html">Create data plane</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/create-the-data-plane-network-configuration.html">Create the Data Plane Network configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/create-the-data-plane-vm.html">Create the Data Plane VM</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/data-plane-deployment.html">Data Plane Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/troubleshoot-the-data-plane-deployment.html">Troubleshoot the Data Plane deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/verify-data-plane-deployment.html">Verify data plane deployment</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../access-openstack/access-openstack.html">Access OpenStack</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../access-openstack/steps-to-access-openstack.html">Steps to Access OpenStack</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a></li>
+    <li><a href="introduction.html">Introduction</a></li>
+    <li><a href="rhoso-installation-process-overview.html">RHOSO installation process overview</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">RHOSO installation process overview</h1>
+<div class="sect1">
+<h2 id="_rhoso_installation_process_overview"><a class="anchor" href="#_rhoso_installation_process_overview"></a>RHOSO Installation Process Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Red Hat OpenStack Services on OpenShift (RHOSO) installation process involves several key steps that prepare your environment and deploy the control plane services followed by managing data plane nodes. This overview will guide you through the essential stages of the RHOSO installation, focating on the high-level procedures rather than intricate details which will be covered in subsequent sections.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Traditional TripleO Deployment vs OpenShift Cluster</strong>: Traditionally, Red Hat OpenStack Platform (RHOSP) was deployed using Director (TripleO), a set of OpenStack-native tools to install and manage RHOSP. In contrast, the deployment with an OpenShift cluster enables containerized deployments for better orchestration, scalability, and integration with existing Kubernetes ecosystems.</p>
+</li>
+<li>
+<p><strong>Prerequisites for Installation</strong>: Before initiating the RHOSO installation, ensure you meet certain prerequisites:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>About the Prerequisite Operators</strong>: Install necessary operators like NMState Operator for managing network configurations, MetalLB Operator for Layer 2 load balancing, and Cert-Manager Operator to handle certificate management within your OpenShift cluster.</p>
+</li>
+<li>
+<p><strong>Install NMState Operator</strong>: This operator simplifies and automates the configuration of network devices. It uses YANG models for defining device configurations, making it easier to manage complex networking requirements.</p>
+</li>
+<li>
+<p><strong>Install MetalLB Operator</strong>: MetalLB provides Layer 2 load balancing services without requiring any external cloud-provider specific extensions. It can be deployed on bare-metal clusters managed by Kubernetes.</p>
+</li>
+<li>
+<p><strong>Install Cert-Manager Operator</strong>: This operator automates the lifecycle of certificates from certificate authorities (CAs). It integrates with Let&#8217;s Encrypt and other CAs, enabling automatic renewal of certificates in your OpenShift environment.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Preparing RHOCP for RHOSP Network Isolation</strong>: To ensure proper network isolation within your OpenShift cluster:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Setting up Node Network Configuration Policy</strong>: Define a <code>NodeNetworkConfigurationPolicy</code> resource to configure the networking on each node in your OpenShift cluster, ensuring consistent and predictable behavior.</p>
+</li>
+<li>
+<p><strong>Configuring Network Attachment Definition</strong>: Create a <code>NetworkAttachmentDefinition</code> resource to define how pods connect to underlying network interfaces or custom plugins.</p>
+</li>
+<li>
+<p><strong>Configure MetalLB IP Address Pools</strong>: Set up IP address pools for LoadBalancer services managed by MetalLB. This ensures that the load balancer can allocate and manage IP addresses effectively.</p>
+</li>
+<li>
+<p><strong>Setup MetalLB L2 Advertisement configuration</strong>: Properly configure MetalLB to advertise Layer 2 protocols, allowing seamless communication between pods and data plane nodes.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In subsequent sections, we will delve into detailed steps for configuring storage, installing control plane services, managing data plane nodes, and accessing your newly installed OpenStack environment on RHOSO.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="traditional-tripleo-deployment-versus-deployment-with-openshift-cluster.html">Traditional TripleO deployment versus deployment with OpenShift cluster.</a></span>
+  <span class="next"><a href="../prerequisites-for-installation/prerequisites-for-installation.html">Prerequisites for Installation</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

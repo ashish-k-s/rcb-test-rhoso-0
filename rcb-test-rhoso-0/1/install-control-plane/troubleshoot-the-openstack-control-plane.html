@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Troubleshoot the OpenStack Control Plane :: RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</title>
+    <link rel="prev" href="create-the-openstack-control-plane.html">
+    <link rel="next" href="verify-openstack-control-plane-configuration.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rcb-test-rhoso-0" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction/introduction.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction/traditional-tripleo-deployment-versus-deployment-with-openshift-cluster.html">Traditional TripleO deployment versus deployment with OpenShift cluster.</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction/rhoso-installation-process-overview.html">RHOSO installation process overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../prerequisites-for-installation/prerequisites-for-installation.html">Prerequisites for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/about-the-prerequisite-operators.html">About the Prerequisite Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-nmstate-operator.html">Install NMState Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-metallb-operator.html">Install MetalLB Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-cert-manager-operator.html">Install Cert-Manager Operator</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/preparing-rhocp-for-rhosp-network-isolation.html">Preparing RHOCP for RHOSP Network Isolation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/setting-up-node-network-configuration-policy.html">Setting up Node Network Configuration Policy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/configuring-network-attachment-definition.html">Configuring Network Attachment Definition</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/configure-metallb-ip-address-pools.html">Configure MetalLB IP Address Pools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/setup-metallb-l2-advertisement-configuration.html">Setup MetalLB L2 Advertisement configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../storage/storage.html">Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../storage/configuring-nfs-storage.html">Configuring NFS storage</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../storage/verify-storage-configuration.html">Verify storage configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="install-control-plane.html">Install control plane</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configure-the-secrets.html">Configure the secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="install-the-openstack-operator.html">Install the OpenStack Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="create-the-openstack-control-plane.html">Create the OpenStack Control Plane</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="troubleshoot-the-openstack-control-plane.html">Troubleshoot the OpenStack Control Plane</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verify-openstack-control-plane-configuration.html">Verify OpenStack control plane configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../create-data-plane/create-data-plane.html">Create data plane</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/create-the-data-plane-network-configuration.html">Create the Data Plane Network configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/create-the-data-plane-vm.html">Create the Data Plane VM</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/data-plane-deployment.html">Data Plane Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/troubleshoot-the-data-plane-deployment.html">Troubleshoot the Data Plane deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/verify-data-plane-deployment.html">Verify data plane deployment</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../access-openstack/access-openstack.html">Access OpenStack</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../access-openstack/steps-to-access-openstack.html">Steps to Access OpenStack</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a></li>
+    <li><a href="install-control-plane.html">Install control plane</a></li>
+    <li><a href="troubleshoot-the-openstack-control-plane.html">Troubleshoot the OpenStack Control Plane</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Troubleshoot the OpenStack Control Plane</h1>
+<div class="sect2">
+<h3 id="_troubleshoot_the_openstack_control_plane"><a class="anchor" href="#_troubleshoot_the_openstack_control_plane"></a>Troubleshoot the OpenStack Control Plane</h3>
+<div class="paragraph">
+<p>Troubleshooting the OpenStack Control Plane involves identifying and resolving issues that prevent the control plane services from functioning correctly within a Red Hat OpenShift Container Platform (RHOCP) environment for Red Hat OpenStack Platform (RHOSP). Here are some common issues and their resolutions:</p>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_issues_and_resolutions"><a class="anchor" href="#_issues_and_resolutions"></a>Issues and Resolutions</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Control Plane Pods not running or in CrashLoopBackOff state</strong></p>
+</li>
+<li>
+<p>Symptoms: The OpenStack control plane pods do not start or repeatedly crash.</p>
+</li>
+<li>
+<p>Causes: Incorrect configuration, insufficient resources (CPU/memory), or issues with container images.</p>
+</li>
+<li>
+<p>Troubleshooting Steps:</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Verify the OpenStackControlPlane CRD for proper resource requests and limits.
+<code><code>asciidoc
+# Example resource requests and limits
+spec:
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+    limits:
+      cpu: "400m"
+      memory: "1Gi"
+</code></code></p>
+</li>
+<li>
+<p>Check OpenStack Control Plane logs for errors using <code>oc logs &lt;control-plane-pod-name&gt;</code>.</p>
+</li>
+<li>
+<p>Ensure the OpenStack container images are up-to-date and accessible by RHOCP.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>API service unreachable or slow responses</strong></p>
+</li>
+<li>
+<p>Symptoms: The OpenStack API service is unresponsive or returns slow responses.</p>
+</li>
+<li>
+<p>Causes: High load, misconfiguration, or database connection issues.</p>
+</li>
+<li>
+<p>Troubleshooting Steps:</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Monitor resource usage (CPU/memory) on the control plane nodes and scale if necessary.</p>
+</li>
+<li>
+<p>Review OpenStack configuration for correct database settings and service endpoints.
+<code><code>asciidoc
+# Example database configuration
+os_db:
+  username: 'openstack'
+  password: '&lt;password&gt;'
+  host: '%{global_domain_name}'
+  port: 5432
+  dbname: 'openstack'
+</code></code></p>
+</li>
+<li>
+<p>Examine OpenStack logs for errors related to the database or API service.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Service deployment failures</strong></p>
+</li>
+<li>
+<p>Symptoms: Control plane services like nova-api, glance-api, etc., fail to deploy.</p>
+</li>
+<li>
+<p>Causes: Incorrect or missing environment variables, dependency issues, or misconfigured secrets.</p>
+</li>
+<li>
+<p>Troubleshooting Steps:</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Verify the OpenStackControlPlane CRD for required environment variables and secrets.
+<code><code>asciidoc
+# Example secret configuration
+os_services_default:
+  auth_url: "http://&lt;identity-service-ip&gt;:5000"
+  region_name: "RegionOne"
+  memcached_servers: "&lt;memcached-ip&gt;:&lt;port&gt;"
+  rabbit_hostname: "&lt;rabbit-host&gt;"
+  rabbit_port: 5672
+  rabbit_userid: 'openstack'
+  rabbit_password: '&lt;password&gt;'
+  service_token_ttl: 600
+</code></code></p>
+</li>
+<li>
+<p>Check for missing or misconfigured secrets in RHOCP&#8217;s secret store.</p>
+</li>
+<li>
+<p>Review deployment logs to identify the root cause of failures and adjust configurations accordingly.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Network connectivity issues</strong></p>
+</li>
+<li>
+<p>Symptoms: Control plane components cannot communicate with each other or external services due to network problems.</p>
+</li>
+<li>
+<p>Causes: Incorrect network policies, firewall rules, or misconfigured node networking.</p>
+</li>
+<li>
+<p>Troubleshooting Steps:</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Review the Network Configuration Policy and Network Attachment Definition for proper network isolation and service connectivity.</p>
+</li>
+<li>
+<p>Validate that required ports are open on control plane nodes' firewalls.</p>
+</li>
+<li>
+<p>Check routing configurations to ensure proper communication between services.</p>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Remember, always refer to the official [Red Hat OpenStack Platform Documentation](<a href="https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/" class="bare">https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/</a>) for the most up-to-date information and additional troubleshooting steps.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="create-the-openstack-control-plane.html">Create the OpenStack Control Plane</a></span>
+  <span class="next"><a href="verify-openstack-control-plane-configuration.html">Verify OpenStack control plane configuration</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

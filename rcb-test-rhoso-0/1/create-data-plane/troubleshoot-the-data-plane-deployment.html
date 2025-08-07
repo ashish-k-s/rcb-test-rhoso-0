@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Troubleshoot the Data Plane deployment :: RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</title>
+    <link rel="prev" href="data-plane-deployment.html">
+    <link rel="next" href="verify-data-plane-deployment.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rcb-test-rhoso-0" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction/introduction.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction/traditional-tripleo-deployment-versus-deployment-with-openshift-cluster.html">Traditional TripleO deployment versus deployment with OpenShift cluster.</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction/rhoso-installation-process-overview.html">RHOSO installation process overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../prerequisites-for-installation/prerequisites-for-installation.html">Prerequisites for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/about-the-prerequisite-operators.html">About the Prerequisite Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-nmstate-operator.html">Install NMState Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-metallb-operator.html">Install MetalLB Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-cert-manager-operator.html">Install Cert-Manager Operator</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/preparing-rhocp-for-rhosp-network-isolation.html">Preparing RHOCP for RHOSP Network Isolation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/setting-up-node-network-configuration-policy.html">Setting up Node Network Configuration Policy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/configuring-network-attachment-definition.html">Configuring Network Attachment Definition</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/configure-metallb-ip-address-pools.html">Configure MetalLB IP Address Pools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/setup-metallb-l2-advertisement-configuration.html">Setup MetalLB L2 Advertisement configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../storage/storage.html">Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../storage/configuring-nfs-storage.html">Configuring NFS storage</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../storage/verify-storage-configuration.html">Verify storage configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../install-control-plane/install-control-plane.html">Install control plane</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/configure-the-secrets.html">Configure the secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/install-the-openstack-operator.html">Install the OpenStack Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/create-the-openstack-control-plane.html">Create the OpenStack Control Plane</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/troubleshoot-the-openstack-control-plane.html">Troubleshoot the OpenStack Control Plane</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/verify-openstack-control-plane-configuration.html">Verify OpenStack control plane configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="create-data-plane.html">Create data plane</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="create-the-data-plane-network-configuration.html">Create the Data Plane Network configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="create-the-data-plane-vm.html">Create the Data Plane VM</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="data-plane-deployment.html">Data Plane Deployment</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="troubleshoot-the-data-plane-deployment.html">Troubleshoot the Data Plane deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verify-data-plane-deployment.html">Verify data plane deployment</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../access-openstack/access-openstack.html">Access OpenStack</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../access-openstack/steps-to-access-openstack.html">Steps to Access OpenStack</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a></li>
+    <li><a href="create-data-plane.html">Create data plane</a></li>
+    <li><a href="troubleshoot-the-data-plane-deployment.html">Troubleshoot the Data Plane deployment</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Troubleshoot the Data Plane deployment</h1>
+<div class="sect2">
+<h3 id="_troubleshoot_the_data_plane_deployment"><a class="anchor" href="#_troubleshoot_the_data_plane_deployment"></a>Troubleshoot the Data Plane Deployment</h3>
+<div class="paragraph">
+<p>Troubleshooting the Red Hat OpenShift (RHOCP) data plane deployment involves identifying and resolving issues that arise during the creation and operation of data plane Virtual Machines (VMs). This section outlines common problems, diagnostic steps, and remediation actions to ensure a successful data plane deployment.</p>
+</div>
+<div class="sect3">
+<h4 id="_common_issues_and_symptoms"><a class="anchor" href="#_common_issues_and_symptoms"></a>Common Issues and Symptoms</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>VM Creation Failure:</strong> VMs fail to be created or provisioned correctly due to various reasons such as insufficient resources, incorrect configurations, or network connectivity issues.</p>
+</li>
+<li>
+<p><strong>Network Configuration Problems:</strong> Data planes VMs might experience networking problems like inability to communicate with other VMs, the control plane, or external networks because of misconfigured Network Attachment Definitions (NADs) or Node Network Configuration Policies (NNCPs).</p>
+</li>
+<li>
+<p><strong>Storage Issues:</strong> Incorrectly configured NFS storage can lead to data plane VM failures during provisioning or runtime issues such as read/write errors or inaccessible storage volumes.</p>
+</li>
+<li>
+<p><strong>Performance Degradation:</strong> Performance bottlenecks may occur if resources are insufficient, misconfigured, or there&#8217;s contention for shared resources among the VMs.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_diagnostic_steps"><a class="anchor" href="#_diagnostic_steps"></a>Diagnostic Steps</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Check Logs:</strong> Examine logs from relevant components like OpenShift Machine API, MetalLB, and Kubernetes events to identify error messages or warnings that indicate the root cause of the problem.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Access machine set logs: <code>oc get machineset &lt;machine-set-name&gt; -o yaml</code></p>
+</li>
+<li>
+<p>Check Kubernetes events: <code>oc get events</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Resource Utilization:</strong> Monitor resource usage (CPU, memory) on RHOCP nodes to ensure there are sufficient resources available for the data plane VMs. Use commands like <code>top</code>, <code>vmstat</code>, or the OpenShift web console to gather this information.</p>
+</li>
+<li>
+<p><strong>Network Connectivity Testing:</strong> Validate network reachability between data plane VMs and other critical components using tools such as <code>ping</code>, <code>traceroute</code>, or by inspecting NNCP status with <code>oc describe nncp &lt;nncp-name&gt;</code>.</p>
+</li>
+<li>
+<p><strong>Storage Verification:</strong> Ensure NFS shares are correctly mounted and accessible to the data plane VMs using commands like <code>df -h</code> and <code>mount</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_remediation_actions"><a class="anchor" href="#_remediation_actions"></a>Remediation Actions</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Resource Adjustments:</strong> If resource constraints are identified, scale up RHOCP nodes or increase VM resource requests/limits in the deployment configuration files.</p>
+</li>
+<li>
+<p><strong>Configuration Review and Correction:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Check NAD and NNCP configurations for errors or mismatches with desired network setups. Make necessary adjustments and reapply configurations using <code>oc apply -f &lt;config-file&gt;</code>.</p>
+</li>
+<li>
+<p>Ensure MetalLB IP address pools are correctly defined and large enough to accommodate the expected number of data plane VMs.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Storage Troubleshooting:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Verify NFS server connectivity, export settings, and ensure NFS shares are properly mounted on the RHOCP nodes.</p>
+</li>
+<li>
+<p>Update or recreate storage classes if incorrect configurations are found.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Performance Tuning:</strong> Optimize resource limits, requests, and QoS classes in Kubernetes deployment manifests to balance workload distribution and minimize contention.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_post_troubleshooting_verification"><a class="anchor" href="#_post_troubleshooting_verification"></a>Post-Troubleshooting Verification</h4>
+<div class="paragraph">
+<p>After implementing remediation actions, verify the health and proper functioning of the data plane VMs:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Check VM status using <code>oc get nodes</code> or OpenShift console.</p>
+</li>
+<li>
+<p>Validate network connectivity between data planes and control plane components.</p>
+</li>
+<li>
+<p>Confirm storage access and functionality through testing applications that rely on this storage.</p>
+</li>
+<li>
+<p>Monitor system performance metrics to ensure there are no lingering bottlenecks.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>By following these steps, you can systematically troubleshoot issues during the RHOSP data plane deployment, ensuring a smooth and successful implementation of your OpenStack environment on Red Hat OpenShift Container Platform.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="data-plane-deployment.html">Data Plane Deployment</a></span>
+  <span class="next"><a href="verify-data-plane-deployment.html">Verify data plane deployment</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

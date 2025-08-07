@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Configuring NFS storage :: RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</title>
+    <link rel="prev" href="storage.html">
+    <link rel="next" href="verify-storage-configuration.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rcb-test-rhoso-0" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction/introduction.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction/traditional-tripleo-deployment-versus-deployment-with-openshift-cluster.html">Traditional TripleO deployment versus deployment with OpenShift cluster.</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction/rhoso-installation-process-overview.html">RHOSO installation process overview</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../prerequisites-for-installation/prerequisites-for-installation.html">Prerequisites for Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/about-the-prerequisite-operators.html">About the Prerequisite Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-nmstate-operator.html">Install NMState Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-metallb-operator.html">Install MetalLB Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../prerequisites-for-installation/install-cert-manager-operator.html">Install Cert-Manager Operator</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/preparing-rhocp-for-rhosp-network-isolation.html">Preparing RHOCP for RHOSP Network Isolation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/setting-up-node-network-configuration-policy.html">Setting up Node Network Configuration Policy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/configuring-network-attachment-definition.html">Configuring Network Attachment Definition</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/configure-metallb-ip-address-pools.html">Configure MetalLB IP Address Pools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preparing-rhocp-for-rhosp-network-isolation/setup-metallb-l2-advertisement-configuration.html">Setup MetalLB L2 Advertisement configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="storage.html">Storage</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="configuring-nfs-storage.html">Configuring NFS storage</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verify-storage-configuration.html">Verify storage configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../install-control-plane/install-control-plane.html">Install control plane</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/configure-the-secrets.html">Configure the secrets</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/install-the-openstack-operator.html">Install the OpenStack Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/create-the-openstack-control-plane.html">Create the OpenStack Control Plane</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/troubleshoot-the-openstack-control-plane.html">Troubleshoot the OpenStack Control Plane</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../install-control-plane/verify-openstack-control-plane-configuration.html">Verify OpenStack control plane configuration</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../create-data-plane/create-data-plane.html">Create data plane</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/create-the-data-plane-network-configuration.html">Create the Data Plane Network configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/create-the-data-plane-vm.html">Create the Data Plane VM</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/data-plane-deployment.html">Data Plane Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/troubleshoot-the-data-plane-deployment.html">Troubleshoot the Data Plane deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../create-data-plane/verify-data-plane-deployment.html">Verify data plane deployment</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../access-openstack/access-openstack.html">Access OpenStack</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../access-openstack/steps-to-access-openstack.html">Steps to Access OpenStack</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes</a></li>
+    <li><a href="storage.html">Storage</a></li>
+    <li><a href="configuring-nfs-storage.html">Configuring NFS storage</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Configuring NFS storage</h1>
+<div class="sect2">
+<h3 id="_configuring_nfs_storage"><a class="anchor" href="#_configuring_nfs_storage"></a>Configuring NFS Storage</h3>
+<div class="paragraph">
+<p>In this section, we will guide you through configuring NFS (Network File System) storage for your Red Hat OpenStack Platform (RHOSP) 18 environment. NFS is a distributed file system protocol that allows a user on a client computer to access files over a network in the same manner as if they were stored locally.</p>
+</div>
+<div class="sect3">
+<h4 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h4>
+<div class="paragraph">
+<p>Before proceeding with configuring NFS storage, ensure you have completed the following tasks:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Install Red Hat OpenShift Container Platform (RHOCP) and set up the required operators such as NMState Operator, MetalLB Operator, and Cert-Manager Operator as described in "Prerequisites for Installation."</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_steps_to_configure_nfs_storage"><a class="anchor" href="#_steps_to_configure_nfs_storage"></a>Steps to Configure NFS Storage</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Create an NFS Export Directory</strong></p>
+<div class="literalblock">
+<div class="content">
+<pre>On your storage server or a dedicated NFS server, create a directory that will be exported for use by OpenStack services:</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+sudo mkdir -p /exports/openstack-nfs
+sudo chmod 777 /exports/openstack-nfs
+```</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Configure NFS Export</strong></p>
+<div class="literalblock">
+<div class="content">
+<pre>Add an export line to the NFS server's `/etc/exports` file. This example exports the directory we created earlier for read and write access by any host:</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+/exports/openstack-nfs  *(rw,sync,no_root_squash)
+```</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>After editing the exports file, restart the NFS service to apply changes:</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+sudo systemctl restart nfs-server
+```</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Create a Kubernetes Persistent Volume (PV)</strong> and Persistent Volume Claim (PVC) for OpenStack Services</p>
+<div class="literalblock">
+<div class="content">
+<pre>To utilize the configured NFS storage within your OpenShift cluster, create a PV and PVC using the following YAML manifests:</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>**PersistentVolume Manifest** (`nfs-pv.yaml`)</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: openstack-nfs-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /exports/openstack-nfs
+    server: &lt;storage_server_ip_address&gt;
+```</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>**PersistentVolumeClaim Manifest** (`nfs-pvc.yaml`)</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openstack-nfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+```</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Apply these manifests using `oc apply -f nfs-pv.yaml` and `oc apply -f nfs-pvc.yaml`.</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Mount NFS Storage to OpenStack Control Plane Pods</strong></p>
+<div class="literalblock">
+<div class="content">
+<pre>You need to modify the OpenStack control plane deployment configuration (`openstack-control-plane` Deployment) to include a volume mount for your NFS storage:</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```yaml
+...
+spec:
+  template:
+    spec:
+      containers:
+        - name: openstack-api
+          volumeMounts:
+            - name: nfs-storage
+              mountPath: /openstack/nfs
+      volumes:
+      - name: nfs-storage
+        persistentVolumeClaim: openstack-nfs-pvc
+```</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Apply this configuration change using `oc replace -f openstack-control-plane.yaml`.</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Verify NFS Storage Configuration</strong></p>
+<div class="literalblock">
+<div class="content">
+<pre>To ensure that the NFS storage has been correctly configured and mounted, you can check the OpenStack control plane pods for the mount point:</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+oc get pod &lt;openstack_api_pod_name&gt; -o jsonpath='{.spec.containers[0].volumeMounts}' | grep nfs-storage
+```</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>You should see an output similar to this, confirming that NFS storage is mounted at `/openstack/nfs` within the control plane pod:</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```json
+[{name: nfs-storage mountPath:/openstack/nfs}]
+```</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>With these steps completed, your OpenStack environment now has configured and accessible NFS storage for various OpenStack services to use. Remember that this guide offers a basic setup; depending on your specific requirements, you might need to adjust paths, permissions, and other settings accordingly.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="storage.html">Storage</a></span>
+  <span class="next"><a href="verify-storage-configuration.html">Verify storage configuration</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
