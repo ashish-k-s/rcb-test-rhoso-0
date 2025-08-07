@@ -1,0 +1,77 @@
+#  Troubleshoot the OpenStack Control Plane
+
+=== Troubleshoot the OpenStack Control Plane ===
+
+Troubleshooting the OpenStack Control Plane involves identifying and resolving issues that prevent the control plane services from functioning correctly within a Red Hat OpenShift Container Platform (RHOCP) environment for Red Hat OpenStack Platform (RHOSP). Here are some common issues and their resolutions:
+
+== Issues and Resolutions ==
+
+* **Control Plane Pods not running or in CrashLoopBackOff state**
+
+  * Symptoms: The OpenStack control plane pods do not start or repeatedly crash.
+  * Causes: Incorrect configuration, insufficient resources (CPU/memory), or issues with container images.
+  * Troubleshooting Steps:
+    1. Verify the OpenStackControlPlane CRD for proper resource requests and limits.
+        ```asciidoc
+        # Example resource requests and limits
+        spec:
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "400m"
+              memory: "1Gi"
+        ```
+    2. Check OpenStack Control Plane logs for errors using `oc logs <control-plane-pod-name>`.
+    3. Ensure the OpenStack container images are up-to-date and accessible by RHOCP.
+
+* **API service unreachable or slow responses**
+
+  * Symptoms: The OpenStack API service is unresponsive or returns slow responses.
+  * Causes: High load, misconfiguration, or database connection issues.
+  * Troubleshooting Steps:
+    1. Monitor resource usage (CPU/memory) on the control plane nodes and scale if necessary.
+    2. Review OpenStack configuration for correct database settings and service endpoints.
+        ```asciidoc
+        # Example database configuration
+        os_db:
+          username: 'openstack'
+          password: '<password>'
+          host: '%{global_domain_name}'
+          port: 5432
+          dbname: 'openstack'
+        ```
+    3. Examine OpenStack logs for errors related to the database or API service.
+
+* **Service deployment failures**
+
+  * Symptoms: Control plane services like nova-api, glance-api, etc., fail to deploy.
+  * Causes: Incorrect or missing environment variables, dependency issues, or misconfigured secrets.
+  * Troubleshooting Steps:
+    1. Verify the OpenStackControlPlane CRD for required environment variables and secrets.
+        ```asciidoc
+        # Example secret configuration
+        os_services_default:
+          auth_url: "http://<identity-service-ip>:5000"
+          region_name: "RegionOne"
+          memcached_servers: "<memcached-ip>:<port>"
+          rabbit_hostname: "<rabbit-host>"
+          rabbit_port: 5672
+          rabbit_userid: 'openstack'
+          rabbit_password: '<password>'
+          service_token_ttl: 600
+        ```
+    2. Check for missing or misconfigured secrets in RHOCP's secret store.
+    3. Review deployment logs to identify the root cause of failures and adjust configurations accordingly.
+
+* **Network connectivity issues**
+
+  * Symptoms: Control plane components cannot communicate with each other or external services due to network problems.
+  * Causes: Incorrect network policies, firewall rules, or misconfigured node networking.
+  * Troubleshooting Steps:
+    1. Review the Network Configuration Policy and Network Attachment Definition for proper network isolation and service connectivity.
+    2. Validate that required ports are open on control plane nodes' firewalls.
+    3. Check routing configurations to ensure proper communication between services.
+
+Remember, always refer to the official [Red Hat OpenStack Platform Documentation](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/) for the most up-to-date information and additional troubleshooting steps.

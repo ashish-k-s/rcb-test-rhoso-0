@@ -1,0 +1,32 @@
+#  About the Prerequisite Operators
+
+= RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes
+== Prerequisites for Installation
+= About the Prerequisite Operators
+
+Before proceeding with the Red Hat OpenStack Platform (RHOSP) 18 installation, it's essential to understand and install several prerequisite operators. These operators provide necessary functionalities and ensure a smooth deployment process. The key prerequisite operators are:
+
+- **NMState Operator**
+  - *Purpose:* NMState Operator enables network configuration management using the NMState project. It provides a declarative API for managing network device configurations based on Kubernetes Custom Resource Definitions (CRDs).
+  - *Why it's needed:* Ensures proper networking configurations for RHOSP control plane services and data plane nodes, simplifying network state management across various devices in your infrastructure.
+
+- **MetalLB Operator**
+  - *Purpose:* MetalLB (Metal Load Balancer) is a layer 2 load balancer implementation for bare metal Kubernetes clusters. The MetalLB Operator installs, configures, and manages the MetalLB software on the cluster.
+  - *Why it's needed:* Provides layer 2 load balancing services to the RHOSP control plane components and data plane nodes, enabling seamless communication between them.
+
+- **Cert-Manager Operator**
+  - *Purpose:* Cert-Manager is a Kubernetes add-on that automates the management and issuance of TLS certificates from various certificate authorities (CAs). It simplifies the process of managing certificates for your cluster resources, including those used for secure communication between RHOSP components.
+  - *Why it's needed:* Facilitates the acquisition and renewal of certificates required by various RHOSP services to establish encrypted connections and maintain secure communication within the platform.
+
+To ensure a successful RHOSP 18 installation, install these operators before proceeding with the remaining prerequisites and the actual deployment process:
+
+1. **Install NMState Operator**
+   - Follow the official [NMState Operator documentation](https://nmstate.io/projects/operator/) to set up the NMState Operator in your Red Hat OpenShift Container Platform (RHOCP).
+
+2. **Install MetalLB Operator**
+   - Refer to the [MetalLB Operator documentation](https://metallb.universe.xfce.org/guide/overview.html) for instructions on deploying and configuring the MetalLB Operator in your RHOCP environment.
+
+3. **Install Cert-Manager Operator**
+   - To install Cert-Manager, refer to the [official documentation](https://docs.cert-manager.io/en/latest/getting-started/introduction.html). Make sure to properly configure it for your specific CA and RHOSP requirements.
+
+By installing these prerequisite operators, you establish a solid foundation for provisioning control plane services and managing data plane nodes in Red Hat OpenStack Platform 18. These operators simplify various aspects of the deployment process, including networking, load balancing, and certificate management, ensuring an efficient and secure RHOSP environment.

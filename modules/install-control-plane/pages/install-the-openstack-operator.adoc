@@ -1,0 +1,19 @@
+#  Install the OpenStack Operator
+
+To install the OpenStack Operator in Red Hat OpenShift (RHOSO), follow these steps:
+
+= Install OpenStack Operator
+
+The OpenStack Operator is a crucial component for managing OpenStack services within RHOSO. It automates the deployment, configuration, and lifecycle management of OpenStack components. Here's how to install it:
+
+1. **Access the Red Hat OpenShift web console**: Log in to your Red Hat OpenShift cluster using the web console.
+
+2. **Navigate to Operators**: In the left-hand menu, click on "Operators" -> "OperatorHub".
+
+3. **Search for OpenStack Operator**: In the OperatorHub, search for "OpenStack" in the search bar. The Red Hat-certified OpenStack Operator should appear in the search results. Click on it to view more details.
+
+4. **Install OpenStack Operator**: On the OpenStack Operator page, click the "Install" button. You will then be prompted to select a namespace for installation. Choose an appropriate namespace (e.g., `openstack`) and click "Install".
+
+5. **Monitor Installation Status**: After initiating the installation, monitor its progress in the Operators > Installed Operators section of the web console. Once the OpenStack Operator shows as "Succeeded", it's ready for use.
+
+By following these steps, you will have successfully installed the OpenStack Operator on your Red Hat OpenShift environment, enabling automated management and deployment of OpenStack services. Remember that this operator requires other prerequisites such as NMState, MetalLB, and Cert-Manager Operators to be installed beforehand for proper functionality. Refer to the 'Prerequisites for Installation' section in your training content for detailed instructions on installing these operators.

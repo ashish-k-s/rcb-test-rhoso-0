@@ -1,0 +1,119 @@
+#  Verify storage configuration
+
+===
+
+## Verify Storage Configuration
+
+After setting up NFS storage as per the [CONFIGURING NFS STORAGE](#configuring-nfs-storage) section, it's crucial to verify that the storage has been correctly configured for use with RHOSP (Red Hat OpenStack Platform). Here’s a step-by-step guide on how to validate your storage setup.
+
+### Prerequisites:
+- You must have previously completed the [CONFIGURING NFS STORAGE](#configuring-nfs-storage) section, ensuring an active NFS server is running and accessible.
+
+### Steps to Verify Storage Configuration
+
+1. **Check NFS Export Availability**
+
+   - Use a client machine outside your OpenShift cluster to access the NFS share.
+   - Execute the `showmount` command on the NFS server to confirm that exports are active:
+
+     ```bash
+     showmount -e <NFS_Server_IP>
+     ```
+
+   - Ensure the desired export directory is listed, indicating it's available for client connections.
+
+2. **Test Access from an RHOSP Node**
+
+   - SSH into one of your RHOSP nodes or use a machine within the OpenShift cluster where you intend to deploy RHOSP services.
+   - Attempt to mount the NFS share using the `mount` command:
+
+     ```bash
+     sudo mount <NFS_Server_IP>:/<export_path> /mnt/temp -o nfsvers=4.1,noresvport
+     ```
+
+   - Replace `<NFS_Server_IP>` and `<export_path>` with your actual NFS server IP address and export path, respectively.
+   - Confirm successful mount by checking the directory listing:
+
+     ```bash
+     ls /mnt/temp
+     ```
+
+3. **Verify Storage Class Availability**
+
+   - Log in to your OpenShift cluster’s web console or use `oc` CLI to access Kubernetes resources.
+   - Check for a storage class corresponding to your NFS setup. This should be listed under PersistentVolumeClaims (PVC) and VolumeSnapshotClasses if you've configured snapshots:
+
+     ```bash
+     oc get sc
+     ```
+
+   - Ensure the storage class details match what was configured during NFS setup, including provisioner, parameters, etc.
+
+4. **Test Persistent Volume Claims**
+
+   - Create a new PVC using the previously verified storage class:
+
+     ```bash
+     oc create -f - <<EOF
+     apiVersion: v1
+   kind: PersistentVolumeClaim
+   metadata:
+     name: <desired-pvc-name>
+   spec:
+     accessModes:
+       - ReadWriteOnce
+     resources:
+       requests:
+         storage: 1Gi # Adjust as needed
+     storageClassName: <storage_class_name>
+   EOF
+     ```
+
+   - Replace `<desired-pvc-name>` and `<storage_class_name>` with appropriate names.
+   - Verify the PVC's status to ensure it is bound correctly:
+
+     ```bash
+     oc get pvc
+     ```
+
+5. **Data Integrity Check**
+
+   - Optionally, create a pod that uses this PVC and write some test data to validate if reads and writes are functioning as expected:
+
+     ```bash
+     oc create -f - <<EOF
+     apiVersion: v1
+   kind: Pod
+   metadata:
+     name: <test-pod-name>
+   spec:
+     containers:
+     - name: <test-container-name>
+       image: busybox
+       command:
+         - "/bin/sh"
+         - "-c"
+         - "touch /data/testfile; sleep 300; echo 'Test data written' > /data/testfile"
+       volumeMounts:
+       - mountPath: /data
+         name: <pvc-name>
+     restartPolicy: Never
+     volumes:
+     - name: <pvc-name>
+       persistentVolumeClaim:
+         claimName: <desired-pvc-name>
+   EOF
+     ```
+
+   - Replace `<test-pod-name>`, `<test-container-name>`, and `<desired-pvc-name>` with suitable names.
+   - After the pod runs, inspect it to confirm that data was written correctly:
+
+     ```bash
+     oc exec <test-pod-name> -- cat /data/testfile
+     ```
+
+### Troubleshooting
+
+If any of the above steps fail or show unexpected results, revisit the configuration in [CONFIGURING NFS STORAGE](#configuring-nfs-storage) section. Common issues might include incorrect export settings, network connectivity problems, or misconfigurations in OpenShift’s storage classes and PVC definitions. Ensure all components—NFS server, OpenShift cluster networking, and Kubernetes storage resources—are properly aligned for successful data plane operations with RHOSP.
+
+Upon completing these verifications successfully, you can proceed to [INSTALL CONTROL PLANE](#install-control-plane) with confidence that your storage is correctly set up for use in RHOSP deployments.

@@ -1,0 +1,12 @@
+#  Prerequisites for Installation
+
+= Prerequisites for Installation
+Prerequisites for installing Red Hat OpenStack Platform (RHOSP) 18 involve several steps to ensure a smooth deployment process. This section outlines the necessary preparations:
+
+- **About the Prerequisite Operators**: Familiarize yourself with essential operators required for RHOSP installation, including NMState, MetalLB, and Cert-Manager. These operators play crucial roles in managing network configurations, load balancing, and certificate management respectively.
+  
+- **Install NMState Operator**: Download and install the Networking (NMState) Operator from the OpenShift Container Platform (RHOCP) catalog to manage network configurations across your cluster.
+
+- **Install MetalLB Operator**: Add the MetalLB Operator to RHOCP, which automates Layer 2 load balancing for bare-metal deployments and enhances service discovery in your RHOSP environment.
+
+- **Install Cert-Manager Operator**: Include the Cert-Manager Operator to automatically manage TLS certificates for your services, ensuring secure communication within the OpenStack platform.

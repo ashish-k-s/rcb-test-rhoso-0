@@ -1,0 +1,47 @@
+#  Install Cert-Manager Operator
+
+Here's the AsciiDoc content for installing the Cert-Manager Operator:
+
+= Install Cert-Manager Operator
+
+== Overview
+
+Cert-Manager is a tool that automates the management and issuance of TLS certificates from various certificate authorities (CAs). In the context of RHOSP deployment, it streamlines the process of managing certificates for secure communication between services.
+
+== Prerequisites
+
+Before proceeding with the installation of Cert-Manager Operator, ensure you have:
+
+1. Access to an Red Hat OpenShift (RHOCP) cluster
+2. Required permissions to install Operators in your RHOCP environment
+
+== Installation Steps
+
+Follow these steps to install the Cert-Manager Operator on your Red Hat OpenShift cluster:
+
+# Installing the Operator
+
+1. Log into your Red Hat OpenShift Cluster using `oc` CLI or the web console
+2. Navigate to "Operators" -> "OperatorHub"
+3. Search for "Cert-Manager" in the search bar
+4. Click on the "Cert-Manager (Red Hat)" tile
+5. On the Cert-Manager install page, click "Install"
+6. Choose the desired subscription and update channel according to your requirements
+7. Accept the default settings or customize them as per your needs
+8. Click "Install" to start the installation process
+9. Wait for the Operator to complete its installation (this may take a few minutes)
+10. Once installed, you should see the Cert-Manager Operator status updated to "Succeeded"
+
+# Verifying the Installation
+
+To confirm that Cert-Manager is successfully deployed and running:
+
+1. From the Operators page, search for "Cert-Manager"
+2. Check the Cert-Manager Operator status; it should be "Succeeded" and show a green checkmark icon
+3. Navigate to "Workloads" -> "Pods"
+4. Search for pods with the name pattern "cert-manager*"
+5. Ensure there are at least three pods running (one leader pod and two worker pods)
+
+== Conclusion
+
+With Cert-Manager Operator now installed on your Red Hat OpenShift cluster, you can manage TLS certificates for various OpenStack services efficiently. This automation reduces the manual effort required to handle certificate lifecycle, ensuring secure communication between components in your RHOSP environment.

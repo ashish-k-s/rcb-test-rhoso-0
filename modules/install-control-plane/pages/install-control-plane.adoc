@@ -1,0 +1,8 @@
+#  Install control plane
+
+- **Install control plane** involves several steps to establish the OpenStack control plane within Red Hat OpenShift Container Platform (RHOCP).
+  - **Configure the secrets**: Set up necessary secret resources for secure communication and data handling.
+  - **Install the OpenStack Operator**: Deploy the OpenStack Operator using the RHOCP cluster, enabling management of OpenStack services as Kubernetes resources.
+  - **Create the OpenStack Control Plane**: Define and create the control plane components like API, database, message broker, etc., ensuring proper interconnectivity.
+  - **Troubleshoot the OpenStack Control Plane**: Address any issues that may arise during control plane creation to ensure smooth operation.
+  - **Verify OpenStack control plane configuration**: Validate settings and configurations to confirm the control plane is correctly set up for managing data plane nodes.

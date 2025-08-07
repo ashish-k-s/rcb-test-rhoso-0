@@ -1,0 +1,6 @@
+* xref:create-data-plane.adoc[]
+** xref:create-the-data-plane-network-configuration.adoc[]
+** xref:create-the-data-plane-vm.adoc[]
+** xref:data-plane-deployment.adoc[]
+** xref:troubleshoot-the-data-plane-deployment.adoc[]
+** xref:verify-data-plane-deployment.adoc[]

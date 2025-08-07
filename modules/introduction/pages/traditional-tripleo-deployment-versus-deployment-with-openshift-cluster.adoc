@@ -1,0 +1,35 @@
+#  Traditional TripleO deployment versus deployment with OpenShift cluster.
+
+- **Traditional TripleO Deployment**
+
+  Traditional OpenStack deployments using TripleO (OpenStack on OpenStack) involve installing and managing OpenStack services directly on bare metal servers. This method requires manual configuration of each component, including networking, storage, and the control plane services. The deployment process can be complex, time-consuming, and error-prone due to its high degree of customization and dependency management.
+
+TripleO orchestrates the installation and upgrade processes using Ansible, automating many aspects of OpenStack deployment on bare metal. However, it still requires significant expertise in configuring various OpenStack components and handling underlying infrastructure.
+
+**Pros:**
+- Fine-grained control over infrastructure configuration.
+- Ability to customize deployments according to specific needs.
+- No additional platform dependencies (no need for a separate OpenShift cluster).
+
+**Cons:**
+- High complexity and manual intervention required.
+- Increased risk of human errors during deployment and maintenance.
+- Steeper learning curve due to intricate configuration details.
+
+- **Deployment with OpenShift Cluster**
+
+  Deploying OpenStack using an OpenShift cluster introduces an additional layer, where OpenShift manages the bare metal servers (or virtual machines) as worker nodes. This approach leverages Kubernetes orchestration capabilities for managing containerized OpenStack services. The deployment becomes more streamlined, automated, and easier to scale compared to traditional TripleO methods.
+
+Using OpenShift for OpenStack deployment simplifies infrastructure management by relying on Kubernetes-native tools for tasks such as networking, storage, and service discovery. This method offers a more consistent and automated experience across diverse environments, making it easier for operators with varying levels of expertise.
+
+**Pros:**
+- Simplified and automated deployment and scaling processes using Kubernetes.
+- Reduced risk of human error due to centralized management.
+- Easier integration with existing OpenShift clusters and their management tools.
+
+**Cons:**
+- Potential performance overhead due to the additional layer of Kubernetes.
+- Requires familiarity with OpenShift concepts and administration.
+- May not offer the same level of customization as traditional TripleO deployments.
+
+In conclusion, choosing between traditional TripleO deployment and deploying with an OpenShift cluster involves balancing the need for control versus ease of management. Traditional TripleO offers more flexibility and direct control but demands a higher degree of expertise in managing OpenStack components and underlying infrastructure. In contrast, using OpenShift provides a more streamlined, automated, and potentially easier-to-manage deployment experience at the cost of reduced customization options.

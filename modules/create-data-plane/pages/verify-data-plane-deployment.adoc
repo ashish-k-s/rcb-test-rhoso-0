@@ -1,0 +1,65 @@
+#  Verify data plane deployment
+
+== Verify Data Plane Deployment
+
+After creating the Data Plane, it's crucial to verify its successful deployment. This ensures that all nodes and services are functioning correctly as expected. Here's a step-by-step guide on how to validate your data plane deployment in RHOSP:
+
+1. **Check Node Status**
+
+   Verify that each node in the Data Plane is up and running by checking their status. Use OpenShift CLI or web console to list all nodes, ensuring none are in an 'Ready' state with an 'Available' condition.
+
+   ```bash
+   oc get nodes
+   ```
+
+   Each node should return a status similar to: `NAME STATUS ROLES AGE VERSION`
+
+2. **Inspect Pods**
+
+   Ensure that OpenStack related pods are running on each data plane node. List all pods across namespaces and filter for OpenStack-related pods, such as those from the `openstack` or `tripleo` projects.
+
+   ```bash
+   oc get pods --all-namespaces | grep openstack
+   ```
+
+   All listed pods should have a 'Running' status and no errors in their descriptions.
+
+3. **Test Network Connectivity**
+
+   To verify network connectivity within the data plane, check pod-to-pod communication. For example, use a simple `nc` (netcat) command to test if OpenStack API services are reachable from other nodes.
+
+   ```bash
+   oc exec <openstack_api_pod> -- nc -zv <target_node_ip> <target_port>
+   ```
+
+4. **Validate Service Health**
+
+   Check the health and readiness of OpenStack services running on data plane nodes. Use OpenShift's service health endpoints to ensure all critical components are responding correctly.
+
+   For instance, check the status of the OpenStack Identity (Keystone) service:
+
+   ```bash
+   oc exec <keystone_pod> -- curl http://127.0.0.1:5000/health
+   ```
+
+5. **Review Logs**
+
+   Examine container logs for any error messages or warnings that could indicate problems with the deployment. Use `oc logs` command to retrieve logs from specific pods.
+
+   ```bash
+   oc logs <pod_name>
+   ```
+
+   Ensure that there are no critical errors preventing services from functioning as intended.
+
+6. **Perform Functional Tests**
+
+   Lastly, perform functional tests to confirm that the OpenStack services are working correctly. This could include creating a project and user, listing resources, or executing API calls using OpenStack clients (e.g., `openstack` command-line client).
+
+   ```bash
+   openstack project create --domain default myproject
+   openstack user create --project myproject --password adminpass myuser
+   openstack role add --project myproject --user myuser admin
+   ```
+
+Upon completing these steps, you should have a good understanding of whether your Data Plane deployment in RHOSP is functioning correctly. Address any discrepancies or errors identified during verification to ensure a robust and operational environment.

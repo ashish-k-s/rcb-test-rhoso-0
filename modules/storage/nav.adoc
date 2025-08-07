@@ -1,0 +1,3 @@
+* xref:storage.adoc[]
+** xref:configuring-nfs-storage.adoc[]
+** xref:verify-storage-configuration.adoc[]

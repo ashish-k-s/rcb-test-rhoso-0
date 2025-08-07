@@ -1,0 +1,68 @@
+#  Setup MetalLB L2 Advertisement configuration
+
+===
+## Setup MetalLB L2 Advertisement Configuration
+
+MetalLB is a layer 2 load balancer implementation for Kubernetes. In the context of Red Hat OpenShift Container Platform (RHOCP), MetalLB is used to manage the data plane nodes' network configuration for Red Hat OpenStack Platform (RHOSP). To configure MetalLB L2 Advertisement, follow these steps:
+
+### Prerequisites
+
+Before configuring MetalLB L2 Advertisement, ensure you have completed the following tasks:
+
+1. Installed the NMState Operator, Cert-Manager Operator, and MetalLB Operator in your RHOCP cluster.
+2. Configured network settings for node network configuration policies (NNCP).
+3. Created a Network Attachment Definition (NAD) for your data plane nodes.
+4. Configured IP address pools for MetalLB using the Cert-Manager Operator.
+
+### Step-by-step Configuration
+
+1. **Apply MetalLB L2 Advertisement configuration**
+
+   Create a YAML file named `metallb-config.yaml` with the following content:
+
+   ```yaml
+   apiVersion: metallb.io/v1beta1
+   kind: L2Advertisement
+   metadata:
+     name: metallb-l2-advert-data-plane
+     namespace: <your-namespace> # Replace with your desired namespace
+   spec:
+     ipAddressPools:
+       - <ip-address-pool-name> # Replace with the name of the IP address pool you configured
+     lacpNetworkType: "Layer2"
+     lacpActive
+     layer2Configuration:
+       nodeSelector:
+           kubernetes.io/hostname: "<data-plane-node-hostname>" # Replace with your data plane node's hostname
+   ```
+
+   This configuration specifies which IP address pools to use for L2 advertisement, and identifies the specific data plane node(s) where this configuration should apply.
+
+2. **Apply the MetalLB configuration**
+
+   Apply the YAML file using `kubectl`:
+
+   ```bash
+   kubectl apply -f metallb-config.yaml
+   ```
+
+3. **Verify MetalLB L2 Advertisement configuration**
+
+   After applying the configuration, verify that the MetalLB L2 advertisement is correctly configured:
+
+   ```bash
+   kubectl get l2advertisements -n <your-namespace>
+   ```
+
+   This command should display your `metallb-l2-advert-data-plane` entry with the appropriate pool and node.
+
+### Troubleshooting
+
+If you encounter issues, consider the following common problems:
+
+- **Incorrect IP address pools:** Ensure that the `ipAddressPools` reference matches a valid IP address pool previously configured using Cert-Manager.
+- **Node Selector not matching:** Verify that the `nodeSelector` in your MetalLB L2 Advertisement configuration correctly identifies the desired data plane nodes.
+
+For further assistance, consult OpenShift and RHOSP documentation or engage with Red Hat Support for expert insights and troubleshooting guidance.
+
+===

@@ -1,22 +1,33 @@
-= An Example Quick Course
+=  RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes
 :navtitle: Home
 
 == Introduction
 
-Course Title: Course title FIXME
+Course Title:  RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes
 
 Description:
 Course description FIXME
 
 Duration: FIXME hours
 
-== Objectives
+== Topics covered in this course
 
-On completing this course, you should be able to:
 
-* Observable, measurable objective...
-* Observable, measurable objective...
-* Observable, measurable objective...
+*  Introduction
+
+*  Prerequisites for Installation
+
+*  Preparing RHOCP for RHOSP Network Isolation
+
+*  Storage
+
+*  Install control plane
+
+*  Create data plane
+
+*  Access OpenStack
+
+
 
 == Prerequisites
 

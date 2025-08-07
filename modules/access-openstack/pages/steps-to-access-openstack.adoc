@@ -1,0 +1,32 @@
+#  Steps to Access OpenStack
+
+== Access OpenStack
+
+Once you have successfully provisioned the control plane services and managed data plane nodes, you can access your Red Hat OpenStack Platform (RHOSP) environment. Here are the steps to log into the OpenStack dashboard:
+
+**1. Obtain OpenStack credentials:**
+Before accessing the OpenStack dashboard, ensure that you have the necessary credentials provided during the installation process or obtained from your system administrator. These credentials typically include:
+
+- **Username**: The username for logging in to the OpenStack dashboard.
+- **Password**: The password corresponding to the specified username.
+- **Authentication URL**: The address of the OpenStack Identity service endpoint, often `http://<Your_OpenStack_Host>:5000/v3` or `https://<Your_OpenStack_Host>:13774/v2.0`. Replace `<Your_OpenStack_Host>` with your actual RHOSP host's address.
+- **Domain**: If your deployment uses keystone domains, specify the appropriate domain name.
+
+**2. Access the OpenStack dashboard (Horizon):**
+Open a web browser and navigate to the authentication URL you obtained in step 1. In the login screen, enter the provided username and password. Click on the "Sign In" button to proceed.
+
+**3. Navigate through OpenStack Dashboard:**
+Upon successful login, you'll be directed to the OpenStack dashboard (Horizon). Here, you can manage various aspects of your cloud infrastructure:
+
+- **Project**: Switch between projects (tenants) by clicking on the project name at the top left corner.
+- **Users and Roles**: Manage users and roles associated with your projects from the "Identity" section in the dashboard menu.
+- **Compute**: Access virtual machine instances, flavors, images, and other compute resources under the "Compute" section.
+- **Network**: Configure network settings such as subnets, routers, and security groups via the "Network" section.
+- **Object Storage (Swift)**: Manage object storage buckets, containers, and objects through the "Object Storage" section.
+- **Block Storage (Cinder)**: Create and manage block storage volumes using the "Block Storage" section.
+- **Dashboard Settings**: Customize dashboard preferences like time zones, notifications, and user interface language in the "Settings" menu.
+
+**4. Logout:**
+When finished, click on your username at the top right corner of the dashboard and select "Sign Out" to log out from the OpenStack environment securely.
+
+By following these steps, you can efficiently access and manage your Red Hat OpenStack Platform using the Horizon web-based user interface. Remember that familiarity with OpenStack services and resources will help you make the most of your cloud infrastructure management experience.

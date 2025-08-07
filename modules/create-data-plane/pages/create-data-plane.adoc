@@ -1,0 +1,7 @@
+#  Create data plane
+
+- **Create Data Plane:** This section focuses on deploying the data plane nodes for Red Hat OpenStack Services (RHOSO). It involves creating a network configuration for the data plane, initiating the deployment of virtual machines (VMs), and managing this deployment process. Key steps include:
+  - Designing the Data Plane Network configuration tailored to your environment's requirements.
+  - Starting the creation of Data Plane VMs according to the designed configuration.
+  - Monitoring and troubleshooting the data plane deployment to ensure successful VM instantiation and integration with the control plane.
+  - Finally, verifying the data plane deployment to confirm that all VMs are operational and correctly connected within the RHOSO infrastructure.

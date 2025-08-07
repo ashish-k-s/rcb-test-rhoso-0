@@ -1,0 +1,137 @@
+#  Data Plane Deployment
+
+= Data Plane Deployment
+
+In this section, we will cover the steps required to deploy the data plane in a Red Hat OpenShift Container Storage (RHOCP) environment configured for Red Hat OpenStack Platform (RHOSP). The data plane consists of Virtual Machines (VMs) that handle the actual data storage and processing.
+
+## Create the Data Plane Network Configuration
+
+1. **Create a custom network attachment definition (NAD):**
+
+   Use the following AsciiDoc code block as a template to create a NetworkAttachmentDefinition resource YAML file, e.g., `dataplane-nad.yaml`.
+
+   ```yaml
+   ---
+   apiVersion: "k8s.cni.cncf.io/v1"
+   kind: NetworkAttachmentDefinition
+   metadata:
+     name: openstack-dataplane
+   spec:
+     config: |
+       {
+         "cniVersion": "0.3.0",
+         "name": "openstack-dataplane",
+         "type": "host-device",
+         "ipam": {},
+         "mount": {
+           "noWrap": true,
+           "device": "/sys/class/net"
+         }
+       }
+   ```
+
+   Apply the configuration using `kubectl apply -f dataplane-nad.yaml`.
+
+2. **Create a custom node network configuration policy (NNCP):**
+
+   Using the following AsciiDoc code block as a template, create a NodeNetworkConfigurationPolicy resource YAML file, e.g., `dataplane-nncp.yaml`.
+
+   ```yaml
+   ---
+   apiVersion: "policy.open-cluster-management.io/v1"
+   kind: NodeNetworkConfigurationPolicy
+   metadata:
+     name: openstack-dataplane-nncp
+     namespace: <desired-namespace>
+   spec:
+     nodeSelector:
+       matchExpressions:
+         - key: node-role.kubernetes.io/dataplane
+           operator: In
+     desiredLinkState: "present"
+     links:
+       - name: ens3 # or the appropriate interface name for your environment
+         state: "up"
+   ```
+
+   Apply the configuration using `kubectl apply -f dataplane-nncp.yaml`.
+
+## Create the Data Plane VM
+
+1. **Create a custom machineset:**
+
+   Using the following AsciiDoc code block as a template, create a MachineSet resource YAML file, e.g., `dataplane-machineset.yaml`.
+
+   ```yaml
+   ---
+   apiVersion: "machine.openshift.io/v1beta1"
+   kind: MachineSet
+   metadata:
+     name: openstack-dataplane
+   spec:
+     replicas: 3 # Adjust the number of VMs as needed
+     selector:
+       matchLabels:
+         machine.open-cluster-management.io/generated-by: openshift-machine-api
+     template:
+       metadata:
+         labels:
+           machine.open-cluster-management.io/generated-by: openshift-machine-api
+       spec:
+         taints:
+           - key: node-role.kubernetes.io/dataplane
+             effect: NoSchedule
+         providerSpec:
+           value:
+             ... # Configure your cloud provider specifics here, e.g., OpenStack
+           resources:
+             requests:
+               memory: "4Gi"
+               ephemeral-storage: "16Gi"
+   ```
+
+   Apply the configuration using `kubectl apply -f dataplane-machineset.yaml`.
+
+## Data Plane Deployment
+
+1. **Monitor deployment progress:**
+
+   Observe the status of your MachineSet and the created VMs with the following command:
+
+   ```bash
+   watch kubectl get machines --show-labels --sort-by=.metadata.name
+   ```
+
+2. **Verify data plane deployment:**
+
+   Once all the desired VMs are running, you can proceed to deploy OpenStack services on them using Helm charts or other appropriate methods provided by RHOSP documentation.
+
+## Troubleshoot Data Plane Deployment
+
+If you encounter issues during the data plane VM creation or deployment, consider these troubleshooting steps:
+
+- **Check Node Network Configuration Policy (NNCP) status:**
+
+  Use `kubectl get nncp openstack-dataplane-nncp -n <desired-namespace>` to verify if NNCP is applied successfully.
+
+- **Inspect MachineSet events:**
+
+  Run `kubectl describe machineset openstack-dataplane` to check for any errors or issues related to the MachineSet.
+
+- **Review cloud provider logs:**
+
+  Check your OpenStack environment's logs for any relevant information about VM provisioning failures, such as authentication errors, resource quota issues, or network configuration problems.
+
+- **Consult RHOCP and OpenStack documentation:**
+
+  Refer to official documentation for detailed troubleshooting guidance on specific error messages or scenarios you might encounter.
+
+## Verify Data Plane Deployment
+
+After successfully deploying the data plane VMs, ensure they are functioning as expected by:
+
+- **Checking VM status:** Use `kubectl get pods -n <desired-namespace>` to verify if OpenStack service pods are running on the created VMs.
+
+- **Testing network connectivity:** Perform network tests between VMs and other components within your RHOSP environment, ensuring proper isolation and communication as configured.
+
+By following these steps, you will have successfully deployed the data plane in your RHOCP environment configured for RHOSP. Remember to adapt and modify configurations based on your specific environment and requirements.

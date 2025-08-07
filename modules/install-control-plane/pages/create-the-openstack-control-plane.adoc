@@ -1,0 +1,97 @@
+#  Create the OpenStack Control Plane
+
+===
+
+## Create the OpenStack Control Plane
+
+In this section, we will guide you through creating the OpenStack Control Plane using the OpenStack Operator installed previously. This step is crucial as it sets up and configures the essential services required to manage the Red Hat OpenStack Platform (RHOSP) environment. Follow these steps:
+
+### 1. Configure the Secrets
+
+Before creating the OpenStack Control Plane, ensure that you have properly configured the necessary secrets. These secrets hold sensitive data like passwords and encryption keys. Execute the following commands to create required Kubernetes secrets using `kubectl`:
+
+```bash
+# Create a secret for the keystone service
+kubectl create secret generic keystone-secret \
+    --from-literal=password=your_keystone_password \
+    --namespace=openstack
+
+# Create a secret for the mysql service
+kubectl create secret generic mysql-secret \
+    --from-literal=password=your_mysql_password \
+    --namespace=openstack
+```
+
+Replace `your_keystone_password` and `your_mysql_password` with appropriate secure passwords.
+
+### 2. Install OpenStack Operator
+
+Make sure the Red Hat OpenStack Platform (RHOSP) Operator is installed in your OpenShift cluster as per previous steps. If not, please refer to the installation instructions before proceeding further.
+
+### 3. Create the OpenStack Control Plane
+
+Now, we create the control plane resources using `OpenStackControlPlane` custom resource definition (CRD). This process involves multiple sub-resources for different OpenStack services. Run the following command in your terminal:
+
+```bash
+cat <<EOF | kubectl apply -f -
+apiVersion: osp-director.openstack.org/v1beta1
+kind: OpenStackControlPlane
+metadata:
+  name: osp-control-plane
+  namespace: openstack
+spec:
+  # ... (other specifications)
+
+  # Keystone configuration
+  keystone:
+    enabled: true
+    password: your_keystone_password
+
+  # Glance configuration
+  glance:
+    enabled: true
+
+  # Nova compute configuration
+  nova:
+    enabled: true
+    count: 1
+
+  # Neutron ML2 mechanism drivers
+  neutron:
+    enabled: true
+    ml2_mechanism_drivers:
+      - baremetal
+
+  # Ironic API and Conductor services
+  ironic:
+    enabled: true
+    count: 1
+
+  # Cinder configuration
+  cinder:
+    enabled: true
+    volume_backend_name: local
+
+  # ... (other services)
+EOF
+```
+
+Ensure you replace placeholders like `your_keystone_password` with actual sensitive data. The full configuration will depend on your specific RHOSP deployment needs, including the number of instances for each service and other tuning parameters.
+
+### 4. Troubleshoot OpenStack Control Plane (Optional)
+
+During or after creating the control plane, you might encounter issues requiring troubleshooting:
+
+- **Check logs**: Examine OpenShift pods' logs to identify errors. Use commands like `kubectl logs <pod_name>` or access the OpenShift console for detailed logging views.
+- **Verify resources**: Ensure that all required persistent volumes and other resources are correctly provisioned in your cluster.
+- **Review events**: Check the OpenShift Events for any failures or warnings related to OpenStack Control Plane deployment using `kubectl get events -n openstack`.
+
+### 5. Verify OpenStack Control Plane Configuration
+
+After successfully creating the OpenStack Control Plane, verify its configuration and functionality:
+
+1. Access the OpenShift console and check the status of pods in the `openstack` namespace to ensure all services are running correctly.
+2. Validate that necessary network policies and routes have been created for communication between control plane components.
+3. Use tools like `openstack` CLI or Horizon Dashboard (once available) to interact with your RHOSP environment and confirm that core services like Keystone, Glance, Nova, etc., are operational.
+
+Following these steps will successfully create an OpenStack Control Plane within your Red Hat OpenShift cluster, setting the foundation for managing data plane nodes and offering a managed environment for your RHOSP deployment.

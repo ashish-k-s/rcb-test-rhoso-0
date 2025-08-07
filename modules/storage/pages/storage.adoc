@@ -1,0 +1,8 @@
+#  Storage
+
+= RHOSP18 - Storage Configuration
+
+This section outlines the procedures for configuring storage in a Red Hat OpenStack Platform (RHOSP) 18 environment using OpenShift clusters. It includes:
+
+- Configuring NFS storage: Instructions on setting up Network File System for use as storage in your RHOSP deployment.
+- Verifying storage configuration: Steps to confirm that the storage setup is correct and functional.

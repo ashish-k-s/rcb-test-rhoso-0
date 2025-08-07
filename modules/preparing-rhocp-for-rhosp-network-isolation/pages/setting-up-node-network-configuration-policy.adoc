@@ -1,0 +1,83 @@
+#  Setting up Node Network Configuration Policy
+
+= RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes
+== Preparing RHOCP for RHOSP Network Isolation
+
+- Setting up Node Network Configuration Policy
+
+The Node Network Configuration Policy (NNCP) is a crucial component in configuring network settings for nodes within the Red Hat OpenShift Container Platform (RHOCP), ensuring proper isolation and communication for your Red Hat OpenStack Platform (RHOSP) deployment. NNCPs provide a declarative way to configure networking on Red Hat OpenShift nodes, allowing you to manage network configurations across bare-metal and virtual machine environments consistently.
+
+### Step 1: Install NMState Operator
+Before setting up the Node Network Configuration Policy, ensure that you have installed the NMState Operator in your RHOCP environment. The NMState Operator enables you to define and manage the desired state of the network configuration on OpenShift nodes using the `nmstate` project.
+
+1. Access your Red Hat OpenShift cluster as a user with the 'cluster-admin' role.
+2. Navigate to the OperatorHub and search for "NMState".
+3. Click "Install" on the NMState Operator tile, select an appropriate subscription and approval strategy, and confirm the installation.
+
+### Step 2: Create NNCP YAML Files
+Once the NMState Operator is installed, create YAML files that define your desired network configuration using the `nncp` resource. These YAML files will configure interfaces, routes, firewall rules, and other networking settings on each node in your RHOCP cluster.
+
+1. **Example NNCP for a single interface:**
+
+   ```yaml
+   apiVersion: nmstate.io/v1alpha1
+   kind: NodeNetworkConfigurationPolicy
+   metadata:
+     name: my-nncp
+   spec:
+     state: desired
+     desiredConfig:
+       interfaces:
+         - name: ens3
+           description: "Management Interface"
+           type: ethernet
+           state: up
+           mtu: 1500
+           ethernet:
+             macAddress: "AA:BB:CC:DD:EE:FF"
+           ipv4:
+             address:
+               - ip: 192.168.1.10/24
+                 method: static
+             dhcp4: false
+           ipv6:
+             enabled: true
+             method: auto
+   ```
+
+2. **Apply the NNCP:**
+
+   Apply your NNCP YAML file to your RHOCP cluster using `oc apply`:
+
+   ```bash
+   oc apply -f <nncp-file>.yaml
+   ```
+
+### Step 3: Monitor NNCP Status
+After applying the NNCP, you can monitor its status and ensure that all nodes conform to the specified configuration.
+
+1. Check NNCP status:
+
+   ```bash
+   oc get nncp my-nncp -o yaml
+   ```
+
+2. List NNCP events:
+
+   ```bash
+   oc describe nncp my-nncp
+   ```
+
+### Step 4: Troubleshoot NNCP Configuration Issues
+If you encounter issues with your Node Network Configuration Policy, consult the following common troubleshooting steps:
+
+1. **Inspect node status:** Use `oc get nodes` to check the readiness and conditions of your OpenShift nodes to identify any networking-related problems.
+2. **Review NMState logs:** Examine the NMState Operator logs for clues about configuration failures, using commands such as:
+
+   ```bash
+   oc logs <nmstate-operator-pod-name> -n openshift-nmstate
+   ```
+
+3. **Adjust and reapply NNCP:** Modify your NNCP YAML file according to the issues identified in the logs or node status, then reapply it with `oc apply`.
+
+By setting up Node Network Configuration Policies correctly, you ensure that your Red Hat OpenShift Container Platform nodes are appropriately configured for networking, enabling a stable foundation for your Red Hat OpenStack Platform deployment. Remember to adapt these instructions according to your specific network requirements and environment setup.

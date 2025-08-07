@@ -1,0 +1,11 @@
+#  Access OpenStack
+
+= Access OpenStack
+
+After successfully installing and configuring the control plane and data plane nodes, the next step is to access the OpenStack environment. This involves understanding the steps required to interact with the deployed services. Key points include:
+
+- Obtain the necessary credentials for OpenStack authentication.
+- Utilize the OpenStack client (openstack) or Horizon dashboard for user interaction.
+- Familiarize yourself with basic OpenStack commands and UI navigation for resource management (e.g., instances, images, flavors, networks, etc.).
+- Learn about OpenStack service endpoints to effectively communicate with various components like Nova (Compute), Neutron (Network), Glance (Image), Keystone (Identity), etc.
+- Understand the role-based access control (RBAC) for managing user permissions and access levels within the OpenStack environment.

@@ -1,0 +1,38 @@
+#  Create the Data Plane Network configuration
+
+To create the Data Plane network configuration in Red Hat OpenShift (RHOSO), follow these steps:
+
+== Create the Data Plane Network Configuration
+
+1. **Access the Red Hat OpenShift web console.** Log in using your credentials.
+
+2. **Navigate to Networking** > **Network Sets**. Click on the desired network set or create a new one if needed. A network set groups networks for better management and isolation.
+
+3. **Create a new Network Attachment Definition (NAD).**
+
+   - Click on **Add NAD** in the Network Attachments tab.
+   - Provide a name and description for your NAD.
+   - Under the **Configuration** section, select the appropriate **Bridge mapping**, typically a physical network interface like "eth0" or a VLAN-aware bridge (e.g., "bridge- vlan-10").
+   - Choose the desired **Network Type**. For Data Plane configuration, use `macvlan` to create a MACVLAN subinterface for each VM.
+   - Set the **IPAM** configuration as required. Common options are `host-local`, `dhcp`, or `whereabouts`. For this example, we will use `host-local`.
+
+4. **Configure IP Address Management (IPAM).**
+
+   - Select `host-local` for IPAM.
+   - Under the **IPv4 Configuration**, specify the **Subnet** and **Range**. Ensure the range is large enough to accommodate all VMs in your Data Plane. For example, `192.168.10.0/24`.
+   - Under the **IPv6 Configuration**, set up a similar subnet if needed.
+
+5. **Save the NAD configuration.** Click on **Create** or **Save** to apply the changes.
+
+6. **Assign the NAD to the desired namespace.**
+
+   - Navigate to **Networking** > **Namespaces**.
+   - Select the target namespace where you want to deploy your Data Plane VMs.
+   - In the **Network Attachments** tab, click on **Add Attachment**, then select your newly created NAD from the list.
+
+7. **Verify the Network Configuration.**
+
+   - Check if the NAD is successfully assigned to the namespace by reviewing its status in the **Networking** > **Namespaces** section.
+   - Ensure that VMs deployed within this namespace can communicate as expected using their assigned IP addresses.
+
+By following these steps, you have created a custom Data Plane network configuration tailored for your Red Hat OpenStack Service (RHOSO) deployment. This setup allows for proper isolation and efficient communication between control plane services and data plane nodes.

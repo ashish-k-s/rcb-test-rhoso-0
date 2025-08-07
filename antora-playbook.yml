@@ -1,6 +1,6 @@
 site:
-  title: FIXME Course Title
-  start_page: REPLACEREPONAME::index.adoc
+  title:  RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes
+  start_page: rcb-test-rhoso-0::index.adoc
 
 content:
   sources:

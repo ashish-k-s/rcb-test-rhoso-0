@@ -1,0 +1,5 @@
+#  Introduction
+
+- The introduction provides a comparison between traditional TripleO deployment and deployment using an OpenShift cluster for RHOSP18.
+- It outlines an overview of the RHOSO (Red Hat OpenStack Services on OpenShift) installation process, highlighting its unique approach leveraging containerization and Kubernetes orchestration.
+- The introduction sets the stage for subsequent sections by preparing the reader for understanding the distinctive deployment methodology and its benefits in managing control and data plane services within a Red Hat OpenStack environment.

@@ -1,0 +1,6 @@
+* xref:install-control-plane.adoc[]
+** xref:configure-the-secrets.adoc[]
+** xref:install-the-openstack-operator.adoc[]
+** xref:create-the-openstack-control-plane.adoc[]
+** xref:troubleshoot-the-openstack-control-plane.adoc[]
+** xref:verify-openstack-control-plane-configuration.adoc[]

@@ -1,0 +1,68 @@
+#  Create the Data Plane VM
+
+= Create the Data Plane VM
+
+In this section, we will guide you through creating Data Plane Virtual Machines (VMs) as part of provisioning control plane services and managing data plane nodes in Red Hat OpenStack Platform (RHOSP). We'll provide detailed instructions along with a step-by-step hands-on activity to facilitate understanding.
+
+## Prerequisites
+
+Before proceeding, ensure that you have:
+
+1. Completed the RHOCP preparation for network isolation as described in [Prepare RHOCP for RHOSP Network Isolation](#prepare-rhoCP-for-RHOSP-network-isolation).
+2. Configured storage using NFS as outlined in [Storage](#storage).
+3. Installed the OpenStack Operator and created the OpenStack Control Plane as detailed in [Install control plane](#install-control-plane) and [Troubleshoot the OpenStack Control Plane](#troubleshoot-the-openstack-control-plane), respectively.
+
+## Creating Data Plane VMs
+
+To create a Data Plane VM, you will utilize the OpenStack dashboard (Horizon) to launch instances based on predefined flavors and images. The following steps outline this process:
+
+### Step 1: Access the OpenStack Dashboard
+
+1. Navigate to your RHOSP environment URL in a web browser.
+2. Log in with your credentials, usually using an account created during control plane setup.
+
+### Step 2: Select Project and Region
+
+1. From the dashboard homepage, select your project if you have multiple projects.
+2. Choose the appropriate region for your data plane deployment from the dropdown menu at the top of the page.
+
+### Step 3: Launch an Instance
+
+1. Click on **Project > Compute > Instances**.
+2. Click **Create** button to initiate launching a new instance (VM).
+
+### Step 4: Configure Instance Details
+
+1. In the **Details** tab, provide the following information for your Data Plane VM:
+   - **Instance Name:** A descriptive name for your VM (e.g., `dataplane-vm-0`)
+   - **Flavor:** Select a suitable flavor that matches your environment's requirements; consult your infrastructure documentation for available flavors.
+   - **Image:** Choose the appropriate RHOSP image compatible with your control plane configuration.
+
+### Step 5: Configure Networking
+
+1. In the **Networking** tab, ensure that you have configured the following:
+   - **Security Groups:** Assign security groups to allow necessary communication (e.g., SSH access).
+   - **Subnets:** Select a subnet from your available networks for the Data Plane VM.
+   - **Ports:** Configure any required ports or network interfaces according to your data plane requirements.
+
+### Step 6: Review and Launch
+
+1. Navigate to the **Review** tab to ensure all configurations are correct.
+2. Click **Launch** to initiate the creation of the Data Plane VM instance.
+
+### Step 7: Verify VM Creation
+
+1. After successfully launching, you'll be redirected to the **Instances** page, where your newly created Data Plane VM will appear in the list with a status of 'Active'.
+
+## Troubleshooting Data Plane Deployment
+
+If you encounter issues during the creation or configuration of the Data Plane VM:
+
+1. Check OpenStack logs using `nova-compute` and `neutron` services for error messages.
+2. Verify network connectivity and security group rules to ensure proper access.
+3. Confirm that your selected flavor and image match your control plane setup.
+4. If persistent issues arise, consult the [Troubleshoot the OpenStack Control Plane](#troubleshoot-the-openstack-control-plane) section for guidance on resolving more extensive control plane problems.
+
+## Conclusion
+
+Creating Data Plane VMs involves configuring instances through the OpenStack dashboard using appropriate flavors and images. This process ensures that your data plane nodes are correctly set up to work alongside the control plane services. By following these steps, you can effectively establish a fully functional RHOSP environment capable of managing your cloud infrastructure.

@@ -1,0 +1,29 @@
+#  RHOSO installation process overview
+
+== RHOSO Installation Process Overview
+
+The Red Hat OpenStack Services on OpenShift (RHOSO) installation process involves several key steps that prepare your environment and deploy the control plane services followed by managing data plane nodes. This overview will guide you through the essential stages of the RHOSO installation, focating on the high-level procedures rather than intricate details which will be covered in subsequent sections.
+
+1. **Traditional TripleO Deployment vs OpenShift Cluster**: Traditionally, Red Hat OpenStack Platform (RHOSP) was deployed using Director (TripleO), a set of OpenStack-native tools to install and manage RHOSP. In contrast, the deployment with an OpenShift cluster enables containerized deployments for better orchestration, scalability, and integration with existing Kubernetes ecosystems.
+
+2. **Prerequisites for Installation**: Before initiating the RHOSO installation, ensure you meet certain prerequisites:
+
+   - **About the Prerequisite Operators**: Install necessary operators like NMState Operator for managing network configurations, MetalLB Operator for Layer 2 load balancing, and Cert-Manager Operator to handle certificate management within your OpenShift cluster.
+
+   - **Install NMState Operator**: This operator simplifies and automates the configuration of network devices. It uses YANG models for defining device configurations, making it easier to manage complex networking requirements.
+
+   - **Install MetalLB Operator**: MetalLB provides Layer 2 load balancing services without requiring any external cloud-provider specific extensions. It can be deployed on bare-metal clusters managed by Kubernetes.
+
+   - **Install Cert-Manager Operator**: This operator automates the lifecycle of certificates from certificate authorities (CAs). It integrates with Let's Encrypt and other CAs, enabling automatic renewal of certificates in your OpenShift environment.
+
+3. **Preparing RHOCP for RHOSP Network Isolation**: To ensure proper network isolation within your OpenShift cluster:
+
+   - **Setting up Node Network Configuration Policy**: Define a `NodeNetworkConfigurationPolicy` resource to configure the networking on each node in your OpenShift cluster, ensuring consistent and predictable behavior.
+
+   - **Configuring Network Attachment Definition**: Create a `NetworkAttachmentDefinition` resource to define how pods connect to underlying network interfaces or custom plugins.
+
+   - **Configure MetalLB IP Address Pools**: Set up IP address pools for LoadBalancer services managed by MetalLB. This ensures that the load balancer can allocate and manage IP addresses effectively.
+
+   - **Setup MetalLB L2 Advertisement configuration**: Properly configure MetalLB to advertise Layer 2 protocols, allowing seamless communication between pods and data plane nodes.
+
+In subsequent sections, we will delve into detailed steps for configuring storage, installing control plane services, managing data plane nodes, and accessing your newly installed OpenStack environment on RHOSO.

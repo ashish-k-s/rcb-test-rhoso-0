@@ -1,0 +1,60 @@
+#  Verify OpenStack control plane configuration
+
+===
+## Verify OpenStack Control Plane Configuration
+
+After successfully installing the OpenStack Operator and creating the OpenStack Control Plane, it's crucial to verify its proper configuration. Here are detailed steps to ensure that your control plane services are correctly set up:
+
+### 1. Access the OpenShift Console
+
+- Log in to your Red Hat OpenShift (RHOCP) cluster using the CLI or web console. Navigate to the **Operators > Installed Operators** section.
+
+### 2. Check OpenStack Control Plane Resources
+
+- Search for the **OpenStack Operator** and select it to view its details. Verify that you see the necessary resources:
+  - **OpenstackControlPlane**: Ensures that the control plane is running and available with the correct status (e.g., `Ready`).
+  - **OpenstackBaremetalProvider**: Should be present if you're managing bare metal nodes.
+  - **OpenstackImageService** and **OpenstackTelemetry** (optional): Depending on your configuration, these services might also appear here.
+
+### 3. Inspect OpenStack Control Plane Pods
+
+- Navigate to the **Workloads > Pods** section in the OpenShift Console. Filter by the `openstackcontrolplane` namespace to see all related pods:
+  - **Control Plane Manager**: Check if there are pods running with labels such as `component=api`, `component=database`, and `component=compute`. Ensure they have a status of `Running` and are ready (`1/1`).
+  - Other relevant pods (e.g., `keystone`, `glance`, `nova-api`, etc.) should also show up with the correct status.
+
+### 4. Verify Networking Configuration
+
+- Use OpenShift CLI or oc command to inspect networking configurations for control plane services:
+
+  ```bash
+  oc get networkpolicies,services -n openstack
+  ```
+
+  - **NetworkPolicies**: Check if there are policies in place that isolate control plane communication, restricting access only from necessary pods/namespaces.
+  - **Services**: Ensure that the control plane services (e.g., API, database) are exposed correctly with appropriate cluster IPs and selector labels.
+
+### 5. Test Control Plane Functionality
+
+- To confirm that your OpenStack control plane is working as expected, you can use the OpenStack Client (`openstack`) or Horizon Dashboard:
+
+  - **OpenStack Client**:
+
+    - Source the OpenStack RC file (if available) or set up authentication using `keystone credentials`.
+    - Execute basic OpenStack commands like `openstack service list`, `openstack user list`, etc., to validate that services and users are listed correctly.
+
+  - **Horizon Dashboard**:
+
+    - Access the Horizon Dashboard via your cluster's URL, typically at `https://<cluster_ip>/horizon`.
+    - Log in using administrative credentials. Verify that you can view and manage OpenStack resources (projects, users, flavors, images, etc.) without errors.
+
+### 6. Review Logs for Troubleshooting
+
+- If any issues are detected during verification, review the logs of relevant control plane pods:
+
+  ```bash
+  oc logs <pod_name> -n openstack
+  ```
+
+  - Look for error messages or exceptions that can provide insight into what might be wrong and guide your troubleshooting efforts.
+
+By following these steps, you ensure a comprehensive verification of your OpenStack Control Plane configuration, providing confidence in its functionality and readiness for managing data plane nodes within your Red Hat OpenStack Platform (RHOSP) environment.

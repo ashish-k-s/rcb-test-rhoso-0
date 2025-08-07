@@ -1,0 +1,63 @@
+#  Configure MetalLB IP Address Pools
+
+= Configure MetalLB IP Address Pools
+
+In this section, we will focus on configuring IP address pools for MetalLB, a critical component in managing load balancing on Red Hat OpenShift Container Platform (RHOCP) for Red Hat OpenStack Platform (RHOSP).
+
+## Prerequisites
+
+- You have already installed the MetalLB Operator as described in [Install MetalLB Operator](#install-metallb-operator).
+- Basic understanding of networking concepts, particularly Layer 2 (L2) and IP addressing.
+
+## Overview
+
+MetalLB is an add-on that enables the assignment of real network hardware addresses to pods, which allows for load balancing on Red Hat OpenShift Container Platform. To manage this process effectively, you need to configure IP address pools. These pools determine the range of IP addresses MetalLB can allocate from for the load balancers.
+
+## Configuring MetalLB IP Address Pools
+
+To configure MetalLB IP address pools:
+
+1. **Create a ConfigMap for the IP Pool:**
+
+   Using `oc apply -f`, create a YAML file named `metallb-config.yaml` with the following content, replacing `<IP_RANGE>` and `<NETWORK_CIDR>` with appropriate values based on your environment:
+
+   ```yaml
+   apiVersion: metallb.io/v1beta1
+   kind: L2Advertisement
+   metadata:
+     name: default
+     namespace: metallb-system
+   spec:
+     ipAddressPool:
+       - <IP_RANGE>/<NETWORK_CIDR>
+   ```
+
+   Apply the configuration with:
+
+   ```bash
+   oc apply -f metallb-config.yaml
+   ```
+
+2. **Verify Configuration:**
+
+   You can verify that MetalLB has picked up your IP pool configuration using the following command:
+
+   ```bash
+   oc get l2advertisement -n metallb-system default -o yaml
+   ```
+
+   Ensure that `<IP_RANGE>/<NETWORK_CIDR>` appears in the output under `spec.ipAddressPool`.
+
+3. **Troubleshooting:**
+
+   If MetalLB fails to allocate IP addresses from your specified pool, check for:
+   
+   - Incorrect CIDR notation or overlapping ranges with existing networks.
+   - Network policies or firewall rules that may restrict access to the allocated addresses.
+   - Insufficient available IPs within the configured range.
+
+## Conclusion
+
+Configuring MetalLB IP address pools is essential for managing load balancing in a Red Hat OpenShift Container Platform environment integrated with Red Hat OpenStack Platform. This process ensures that MetalLB can allocate IP addresses efficiently and effectively to your services. Always verify your configurations and troubleshoot issues to ensure smooth operation. 
+
+For more detailed insights or advanced use cases, refer back to the official [MetalLB documentation](https://metallb.universe.xfce.org/).

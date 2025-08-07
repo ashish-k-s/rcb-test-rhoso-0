@@ -1,0 +1,11 @@
+#  Preparing RHOCP for RHOSP Network Isolation
+
+- **Preparing RHOCP for RHOSP Network Isolation**
+
+  This process involves several key steps to ensure proper network isolation for Red Hat OpenShift Container Platform (RHOCP) when deploying Red Hat OpenStack Platform (RHOSP).
+  - **Setting up Node Network Configuration Policy**: Define and implement network configuration policies for nodes in the RHOCP cluster to manage network traffic and isolate control and data planes.
+  - **Configuring Network Attachment Definition**: Establish Network Attachment Definitions to enable pods and containers to connect to specific network interfaces, facilitating proper communication between control and data plane components.
+  - **Configure MetalLB IP Address Pools**: Prepare IP address pools for MetalLB (a network load balancer) to assign Layer 2 service addresses, ensuring seamless load balancing within the RHOSP deployment.
+  - **Setup MetalLB L2 Advertisement configuration**: Configure MetalLB to advertise Layer 2 services and enable efficient load distribution among data plane nodes in the RHOCP cluster.
+
+By following these steps, you'll create a well-isolated network environment for your RHOSP deployment on RHOCP, ensuring optimal performance and resource management.

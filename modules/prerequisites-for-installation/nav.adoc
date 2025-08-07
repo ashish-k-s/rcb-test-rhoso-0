@@ -1,0 +1,5 @@
+* xref:prerequisites-for-installation.adoc[]
+** xref:about-the-prerequisite-operators.adoc[]
+** xref:install-nmstate-operator.adoc[]
+** xref:install-metallb-operator.adoc[]
+** xref:install-cert-manager-operator.adoc[]

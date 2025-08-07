@@ -1,0 +1,111 @@
+#  Configuring NFS storage
+
+=== Configuring NFS Storage ===
+
+In this section, we will guide you through configuring NFS (Network File System) storage for your Red Hat OpenStack Platform (RHOSP) 18 environment. NFS is a distributed file system protocol that allows a user on a client computer to access files over a network in the same manner as if they were stored locally.
+
+#### Prerequisites
+Before proceeding with configuring NFS storage, ensure you have completed the following tasks:
+
+- Install Red Hat OpenShift Container Platform (RHOCP) and set up the required operators such as NMState Operator, MetalLB Operator, and Cert-Manager Operator as described in "Prerequisites for Installation."
+
+#### Steps to Configure NFS Storage
+
+1. **Create an NFS Export Directory**
+
+   On your storage server or a dedicated NFS server, create a directory that will be exported for use by OpenStack services:
+
+   ```bash
+   sudo mkdir -p /exports/openstack-nfs
+   sudo chmod 777 /exports/openstack-nfs
+   ```
+
+2. **Configure NFS Export**
+
+   Add an export line to the NFS server's `/etc/exports` file. This example exports the directory we created earlier for read and write access by any host:
+
+   ```bash
+   /exports/openstack-nfs  *(rw,sync,no_root_squash)
+   ```
+
+   After editing the exports file, restart the NFS service to apply changes:
+
+   ```bash
+   sudo systemctl restart nfs-server
+   ```
+
+3. **Create a Kubernetes Persistent Volume (PV)** and Persistent Volume Claim (PVC) for OpenStack Services
+
+   To utilize the configured NFS storage within your OpenShift cluster, create a PV and PVC using the following YAML manifests:
+
+   **PersistentVolume Manifest** (`nfs-pv.yaml`)
+
+   ```yaml
+   apiVersion: v1
+   kind: PersistentVolume
+   metadata:
+     name: openstack-nfs-pv
+   spec:
+     capacity:
+       storage: 1Gi
+     accessModes:
+       - ReadWriteMany
+     persistentVolumeReclaimPolicy: Retain
+     nfs:
+       path: /exports/openstack-nfs
+       server: <storage_server_ip_address>
+   ```
+
+   **PersistentVolumeClaim Manifest** (`nfs-pvc.yaml`)
+
+   ```yaml
+   apiVersion: v1
+   kind: PersistentVolumeClaim
+   metadata:
+     name: openstack-nfs-pvc
+   spec:
+     accessModes:
+       - ReadWriteMany
+     resources:
+       requests:
+         storage: 1Gi
+   ```
+
+   Apply these manifests using `oc apply -f nfs-pv.yaml` and `oc apply -f nfs-pvc.yaml`.
+
+4. **Mount NFS Storage to OpenStack Control Plane Pods**
+
+   You need to modify the OpenStack control plane deployment configuration (`openstack-control-plane` Deployment) to include a volume mount for your NFS storage:
+
+   ```yaml
+   ...
+   spec:
+     template:
+       spec:
+         containers:
+           - name: openstack-api
+             volumeMounts:
+               - name: nfs-storage
+                 mountPath: /openstack/nfs
+         volumes:
+         - name: nfs-storage
+           persistentVolumeClaim: openstack-nfs-pvc
+   ```
+
+   Apply this configuration change using `oc replace -f openstack-control-plane.yaml`.
+
+5. **Verify NFS Storage Configuration**
+
+   To ensure that the NFS storage has been correctly configured and mounted, you can check the OpenStack control plane pods for the mount point:
+
+   ```bash
+   oc get pod <openstack_api_pod_name> -o jsonpath='{.spec.containers[0].volumeMounts}' | grep nfs-storage
+   ```
+
+   You should see an output similar to this, confirming that NFS storage is mounted at `/openstack/nfs` within the control plane pod:
+
+   ```json
+   [{name: nfs-storage mountPath:/openstack/nfs}]
+   ```
+
+With these steps completed, your OpenStack environment now has configured and accessible NFS storage for various OpenStack services to use. Remember that this guide offers a basic setup; depending on your specific requirements, you might need to adjust paths, permissions, and other settings accordingly.

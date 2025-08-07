@@ -1,0 +1,53 @@
+#  Troubleshoot the Data Plane deployment
+
+=== Troubleshoot the Data Plane Deployment
+
+Troubleshooting the Red Hat OpenShift (RHOCP) data plane deployment involves identifying and resolving issues that arise during the creation and operation of data plane Virtual Machines (VMs). This section outlines common problems, diagnostic steps, and remediation actions to ensure a successful data plane deployment.
+
+#### Common Issues and Symptoms
+
+1. **VM Creation Failure:** VMs fail to be created or provisioned correctly due to various reasons such as insufficient resources, incorrect configurations, or network connectivity issues.
+   
+2. **Network Configuration Problems:** Data planes VMs might experience networking problems like inability to communicate with other VMs, the control plane, or external networks because of misconfigured Network Attachment Definitions (NADs) or Node Network Configuration Policies (NNCPs).
+
+3. **Storage Issues:** Incorrectly configured NFS storage can lead to data plane VM failures during provisioning or runtime issues such as read/write errors or inaccessible storage volumes.
+
+4. **Performance Degradation:** Performance bottlenecks may occur if resources are insufficient, misconfigured, or there's contention for shared resources among the VMs.
+
+#### Diagnostic Steps
+
+1. **Check Logs:** Examine logs from relevant components like OpenShift Machine API, MetalLB, and Kubernetes events to identify error messages or warnings that indicate the root cause of the problem.
+
+   - Access machine set logs: `oc get machineset <machine-set-name> -o yaml`
+   - Check Kubernetes events: `oc get events`
+
+2. **Resource Utilization:** Monitor resource usage (CPU, memory) on RHOCP nodes to ensure there are sufficient resources available for the data plane VMs. Use commands like `top`, `vmstat`, or the OpenShift web console to gather this information.
+
+3. **Network Connectivity Testing:** Validate network reachability between data plane VMs and other critical components using tools such as `ping`, `traceroute`, or by inspecting NNCP status with `oc describe nncp <nncp-name>`.
+
+4. **Storage Verification:** Ensure NFS shares are correctly mounted and accessible to the data plane VMs using commands like `df -h` and `mount`.
+
+#### Remediation Actions
+
+1. **Resource Adjustments:** If resource constraints are identified, scale up RHOCP nodes or increase VM resource requests/limits in the deployment configuration files.
+
+2. **Configuration Review and Correction:**
+   - Check NAD and NNCP configurations for errors or mismatches with desired network setups. Make necessary adjustments and reapply configurations using `oc apply -f <config-file>`.
+   - Ensure MetalLB IP address pools are correctly defined and large enough to accommodate the expected number of data plane VMs.
+
+3. **Storage Troubleshooting:**
+   - Verify NFS server connectivity, export settings, and ensure NFS shares are properly mounted on the RHOCP nodes.
+   - Update or recreate storage classes if incorrect configurations are found.
+
+4. **Performance Tuning:** Optimize resource limits, requests, and QoS classes in Kubernetes deployment manifests to balance workload distribution and minimize contention.
+
+#### Post-Troubleshooting Verification
+
+After implementing remediation actions, verify the health and proper functioning of the data plane VMs:
+
+1. Check VM status using `oc get nodes` or OpenShift console.
+2. Validate network connectivity between data planes and control plane components.
+3. Confirm storage access and functionality through testing applications that rely on this storage.
+4. Monitor system performance metrics to ensure there are no lingering bottlenecks.
+
+By following these steps, you can systematically troubleshoot issues during the RHOSP data plane deployment, ensuring a smooth and successful implementation of your OpenStack environment on Red Hat OpenShift Container Platform.

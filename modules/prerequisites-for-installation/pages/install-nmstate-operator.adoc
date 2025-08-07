@@ -1,0 +1,51 @@
+#  Install NMState Operator
+
+To install the NMState Operator, follow these steps:
+
+== Install NMState Operator
+
+The NMState Operator is a Kubernetes operator for the network device management tool, NMState. It automates the configuration and management of network devices declaratively using Kubernetes custom resources. To ensure proper functioning of Red Hat OpenShift Container Platform (RHOCP) for Red Hat OpenStack Platform (RHOSP) network isolation, installing the NMState Operator is essential.
+
+### Prerequisites
+
+Before proceeding with the installation, make sure you have:
+
+1. Access to a RHOCP cluster as a user with `cluster-admin` privileges.
+2. The `oc` command-line tool installed and configured for your RHOCP environment.
+
+### Installation Steps
+
+1. **Create a YAML file** named `nmstate-operator-sub.yaml` with the following content, which defines a Subscription resource to install the NMState Operator from the Red Hat Operator Hub:
+
+   ```yaml
+   apiVersion: operators.coreos.com/v1alpha1
+   kind: Subscription
+   metadata:
+     name: nmstate-operator
+     namespace: openshift-operators
+   spec:
+     channel: stable
+     installPlanApproval: Automatic
+     source: redhat-operators
+     name: nmstate-operator
+   ```
+
+2. **Apply the YAML file** to create the Subscription resource in your RHOCP cluster:
+
+   ```bash
+   oc apply -f nmstate-operator-sub.yaml
+   ```
+
+3. **Verify installation**: Check that the NMState Operator pod is running successfully:
+
+   ```bash
+   oc get pods -n openshift-operators | grep nmstate-operator
+   ```
+
+   You should see output similar to this, indicating a ready state:
+
+   ```
+   nmstate-operator-<random-string>  1/1     Running  0    4m
+   ```
+
+With the NMState Operator now installed in your RHOCP cluster, you can proceed with preparing RHOCP for RHOSP network isolation by setting up Node Network Configuration Policy as described in the relevant section of this training content.

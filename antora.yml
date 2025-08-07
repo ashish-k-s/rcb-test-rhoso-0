@@ -1,10 +1,22 @@
-name: REPLACEREPONAME
-title: FIXME Course Title
+name: rcb-test-rhoso-0
+title:  RHOSP18 - Provision Control Plane Services and Manage Data Plane Nodes
 version: 1
 nav:
 - modules/ROOT/nav.adoc
 - modules/LABENV/nav.adoc
-- modules/chapter1/nav.adoc
-- modules/chapter2/nav.adoc
-- modules/chapter3/nav.adoc
+
+- modules/introduction/nav.adoc
+
+- modules/prerequisites-for-installation/nav.adoc
+
+- modules/preparing-rhocp-for-rhosp-network-isolation/nav.adoc
+
+- modules/storage/nav.adoc
+
+- modules/install-control-plane/nav.adoc
+
+- modules/create-data-plane/nav.adoc
+
+- modules/access-openstack/nav.adoc
+
 - modules/appendix/nav.adoc
